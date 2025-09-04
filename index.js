@@ -12,7 +12,7 @@ function parse (template, locals, shave = {}) {
     const { index } = result
     const [before = 0, after = 0] = Array.isArray(shave[name]) ? shave[name] : []
     strings.push(template.slice(last, index + before))
-    args.push(locals[name] + '')
+    args.push(locals[name])
     last = index + match.length + after
   }
   strings.push(template.slice(last))
@@ -43,7 +43,8 @@ function interlope (arg) {
     objectMode: true,
     async read (cb) {
       try {
-        if (arg === null || typeof arg !== 'object') {
+        if (arg === undefined) this.push('UNDEFINED_TEMPLATE_LOCAL')
+        else if (arg === null || typeof arg !== 'object') {
           this.push(arg)
         } else if (Array.isArray(arg)) {
           for (const item of arg) {
@@ -67,7 +68,7 @@ function interlope (arg) {
 
 function sync (template, locals, shave) {
   const { strings, args } = parse(template, locals, shave)
-  return String.raw({ raw: strings }, ...args)
+  return String.raw({ raw: strings }, ...args.map((arg) => arg === undefined ? 'UNDEFINED_TEMPLATE_LOCAL' : arg + ''))
 }
 
 module.exports = { stream, sync }
