@@ -85,4 +85,3 @@ test('stamp stream w/ stream local', async function (t) {
   await new Promise((resolve) => stream.on('end', resolve))
   t.is(res, final)
 })
-
