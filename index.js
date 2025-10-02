@@ -12,8 +12,7 @@ function parse (template, locals, shave = {}) {
     const { index } = result
     const [before = 0, after = 0] = Array.isArray(shave[name]) ? shave[name] : []
     strings.push(template.slice(last, index + before))
-    const local = locals[name]
-    args.push((typeof local === 'string' || local instanceof Buffer) ? local : local.toString())
+    args.push(locals[name])
     last = index + match.length + after
   }
   strings.push(template.slice(last))
