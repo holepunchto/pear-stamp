@@ -44,6 +44,7 @@ function interlope (arg) {
     async read (cb) {
       try {
         if (arg === undefined) this.push('UNDEFINED_TEMPLATE_LOCAL')
+        else if (typeof arg === 'number') this.push(arg.toString())
         else if (arg === null || typeof arg !== 'object') {
           this.push(arg)
         } else if (Array.isArray(arg)) {
