@@ -18,7 +18,7 @@ test('stamp sync', async function (t) {
   const template = await fs.promises.readFile(templateFile, 'utf8')
   const final = await fs.promises.readFile(finalFile, 'utf8')
 
-  const locals = { name: 'world', version: 'v.1.2.3', url: 'https://docs.pears.com/' }
+  const locals = { name: 'world', version: 'v.1.2.3', count: 100, url: 'https://docs.pears.com/' }
   const res = stamp.sync(template, locals)
   t.is(res, final)
 })
@@ -32,7 +32,7 @@ test('stamp stream', async function (t) {
   const template = await fs.promises.readFile(templateFile, 'utf8')
   const final = await fs.promises.readFile(finalFile, 'utf8')
 
-  const locals = { name: 'world', version: 'v.1.2.3', url: 'https://docs.pears.com/' }
+  const locals = { name: 'world', version: 'v.1.2.3', count: 100, url: 'https://docs.pears.com/' }
   const stream = stamp.stream(template, locals)
   t.teardown(() => stream.destroy())
 
@@ -53,7 +53,7 @@ test('stamp stream w/ promise local', async function (t) {
   const template = await fs.promises.readFile(templateFile, 'utf8')
   const final = await fs.promises.readFile(finalFile, 'utf8')
 
-  const locals = { name: 'world', version: Promise.resolve('v.1.2.3'), url: 'https://docs.pears.com/' }
+  const locals = { name: 'world', version: Promise.resolve('v.1.2.3'), count: 100, url: 'https://docs.pears.com/' }
   const stream = stamp.stream(template, locals)
   t.teardown(() => stream.destroy())
 
@@ -74,7 +74,7 @@ test('stamp stream w/ stream local', async function (t) {
   const template = await fs.promises.readFile(templateFile, 'utf8')
   const final = await fs.promises.readFile(finalFile, 'utf8')
 
-  const locals = { name: 'world', version: Readable.from(['v.1.2.3']), url: 'https://docs.pears.com/' }
+  const locals = { name: 'world', version: Readable.from(['v.1.2.3']), count: 100, url: 'https://docs.pears.com/' }
   const stream = stamp.stream(template, locals)
   t.teardown(() => stream.destroy())
 
