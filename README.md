@@ -8,13 +8,13 @@
 
 ## `stamp.sync(template, locals[, shave])`
 
-Interleaves `template` parts with `locals[name]`. Expectes sanitized/escaped inputs. 
+Interleaves `template` parts with `locals[name]`. Expectes sanitized/escaped inputs.
 
 Returns `string`.
 
-* `template`: `string` containing placeholders
-* `locals`: `{ [name: string]: any }` interpolation values
-* `shave` : `{ [name: string]: [before: number, after: number] }`
+- `template`: `string` containing placeholders
+- `locals`: `{ [name: string]: any }` interpolation values
+- `shave` : `{ [name: string]: [before: number, after: number] }`
 
 ## `stamp.stream(template, locals[, shave])`
 
@@ -22,9 +22,9 @@ Interleaves `template` parts with value-expanded `locals[name]`. Value-expansion
 
 Returns `streamx.Readable` (`objectMode: true`).
 
-* `template`: `string` containing placeholders
-* `locals`: `{ [name: string]: any }` interpolation values. Includes Promise and stream rendering.
-* `shave` : `{ [name: string]: [before: number, after: number] }` slices per before & after for a given local value
+- `template`: `string` containing placeholders
+- `locals`: `{ [name: string]: any }` interpolation values. Includes Promise and stream rendering.
+- `shave` : `{ [name: string]: [before: number, after: number] }` slices per before & after for a given local value
 
 ## License
 
