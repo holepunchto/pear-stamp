@@ -1,7 +1,7 @@
 'use strict'
 const { Readable } = require('streamx')
 
-function parse (template, locals, shave = {}) {
+function parse(template, locals, shave = {}) {
   const args = []
   const strings = []
   let last = 0
@@ -10,7 +10,9 @@ function parse (template, locals, shave = {}) {
     const [match, def] = result
     const [name] = def.split(':').map((s) => s.trim())
     const { index } = result
-    const [before = 0, after = 0] = Array.isArray(shave[name]) ? shave[name] : []
+    const [before = 0, after = 0] = Array.isArray(shave[name])
+      ? shave[name]
+      : []
     strings.push(template.slice(last, index + before))
     args.push(locals[name])
     last = index + match.length + after
@@ -19,15 +21,16 @@ function parse (template, locals, shave = {}) {
   return { strings, args }
 }
 
-function stream (template, locals, shave) {
+function stream(template, locals, shave) {
   const { strings, args } = parse(template, locals, shave)
   return new Readable({
     objectMode: true,
-    async read (cb) {
+    async read(cb) {
       try {
         for (let i = 0; i < strings.length; i++) {
           this.push(strings[i])
-          if (i < args.length) for await (const chunk of interlope(await args[i])) this.push(chunk)
+          if (i < args.length)
+            for await (const chunk of interlope(await args[i])) this.push(chunk)
         }
         this.push(null)
         cb(null)
@@ -38,10 +41,10 @@ function stream (template, locals, shave) {
   })
 }
 
-function interlope (arg) {
+function interlope(arg) {
   return new Readable({
     objectMode: true,
-    async read (cb) {
+    async read(cb) {
       try {
         if (arg === undefined) this.push('UNDEFINED_TEMPLATE_LOCAL')
         else if (typeof arg === 'number') this.push(arg.toString())
@@ -67,9 +70,14 @@ function interlope (arg) {
   })
 }
 
-function sync (template, locals, shave) {
+function sync(template, locals, shave) {
   const { strings, args } = parse(template, locals, shave)
-  return String.raw({ raw: strings }, ...args.map((arg) => arg === undefined ? 'UNDEFINED_TEMPLATE_LOCAL' : arg + ''))
+  return String.raw(
+    { raw: strings },
+    ...args.map((arg) =>
+      arg === undefined ? 'UNDEFINED_TEMPLATE_LOCAL' : arg + ''
+    )
+  )
 }
 
 module.exports = { stream, sync }
