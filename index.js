@@ -10,9 +10,7 @@ function parse(template, locals, shave = {}) {
     const [match, def] = result
     const [name] = def.split(':').map((s) => s.trim())
     const { index } = result
-    const [before = 0, after = 0] = Array.isArray(shave[name])
-      ? shave[name]
-      : []
+    const [before = 0, after = 0] = Array.isArray(shave[name]) ? shave[name] : []
     strings.push(template.slice(last, index + before))
     args.push(locals[name])
     last = index + match.length + after
@@ -29,8 +27,7 @@ function stream(template, locals, shave) {
       try {
         for (let i = 0; i < strings.length; i++) {
           this.push(strings[i])
-          if (i < args.length)
-            for await (const chunk of interlope(await args[i])) this.push(chunk)
+          if (i < args.length) for await (const chunk of interlope(await args[i])) this.push(chunk)
         }
         this.push(null)
         cb(null)
@@ -74,9 +71,7 @@ function sync(template, locals, shave) {
   const { strings, args } = parse(template, locals, shave)
   return String.raw(
     { raw: strings },
-    ...args.map((arg) =>
-      arg === undefined ? 'UNDEFINED_TEMPLATE_LOCAL' : arg + ''
-    )
+    ...args.map((arg) => (arg === undefined ? 'UNDEFINED_TEMPLATE_LOCAL' : arg + ''))
   )
 }
 
