@@ -69,7 +69,13 @@ function interlope (arg) {
 
 function sync (template, locals, shave) {
   const { strings, args } = parse(template, locals, shave)
-  return String.raw({ raw: strings }, ...args.map((arg) => arg === undefined ? 'UNDEFINED_TEMPLATE_LOCAL' : arg + ''))
+  return String.raw({ raw: strings }, ...args.map(interlopeSync))
+}
+
+function interlopeSync (arg) {
+  if (arg === undefined) return 'UNDEFINED_TEMPLATE_LOCAL'
+  if (Array.isArray(arg)) return arg.map(interlopeSync).join('')
+  return arg + ''
 }
 
 module.exports = { stream, sync }
