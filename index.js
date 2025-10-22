@@ -69,7 +69,6 @@ function interlope (arg) {
 
 function sync (template, locals, shave) {
   const { strings, args } = parse(template, locals, shave)
-
   return String.raw({ raw: strings }, ...args.map(interlopeSync))
 }
 
