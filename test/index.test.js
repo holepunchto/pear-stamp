@@ -2,8 +2,8 @@
 
 const { test } = require('brittle')
 const { Readable } = require('streamx')
-const fs = require('bare-fs')
-const path = require('bare-path')
+const fs = require('fs')
+const path = require('path')
 
 const stamp = require('..')
 
