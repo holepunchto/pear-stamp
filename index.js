@@ -1,7 +1,7 @@
 'use strict'
 const { Readable } = require('streamx')
 
-function parse (template, locals, shave = {}) {
+function parse(template, locals, shave = {}) {
   const args = []
   const strings = []
   let last = 0
@@ -19,11 +19,11 @@ function parse (template, locals, shave = {}) {
   return { strings, args }
 }
 
-function stream (template, locals, shave) {
+function stream(template, locals, shave) {
   const { strings, args } = parse(template, locals, shave)
   return new Readable({
     objectMode: true,
-    async read (cb) {
+    async read(cb) {
       try {
         for (let i = 0; i < strings.length; i++) {
           this.push(strings[i])
@@ -38,10 +38,10 @@ function stream (template, locals, shave) {
   })
 }
 
-function interlope (arg) {
+function interlope(arg) {
   return new Readable({
     objectMode: true,
-    async read (cb) {
+    async read(cb) {
       try {
         if (arg === undefined) this.push('UNDEFINED_TEMPLATE_LOCAL')
         else if (typeof arg === 'number') this.push(arg.toString())
@@ -67,9 +67,12 @@ function interlope (arg) {
   })
 }
 
-function sync (template, locals, shave) {
+function sync(template, locals, shave) {
   const { strings, args } = parse(template, locals, shave)
-  return String.raw({ raw: strings }, ...args.map((arg) => arg === undefined ? 'UNDEFINED_TEMPLATE_LOCAL' : arg + ''))
+  return String.raw(
+    { raw: strings },
+    ...args.map((arg) => (arg === undefined ? 'UNDEFINED_TEMPLATE_LOCAL' : arg + ''))
+  )
 }
 
 module.exports = { stream, sync }
